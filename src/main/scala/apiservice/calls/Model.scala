@@ -3,10 +3,9 @@ package apiservice.calls
 import io.circe.{Codec, Decoder, Encoder, HCursor, Json}
 import sttp.tapir.Schema
 import sttp.tapir.SchemaType.{SInteger, SString}
-import org.joda.time.DateTime
-import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
 
 import java.sql.Timestamp
+import java.time.Instant
 
 object Model {
 
@@ -23,7 +22,7 @@ object Model {
   case class CallsInfoResp(calls: List[CallInfo]) extends  Response
 
 
-  case class CallFilter(ani: String, dateFrom: DateTime, dateTo: Option[DateTime]) extends  Request
+  case class CallFilter(ani: String, dateFrom: Instant, dateTo: Option[Instant]) extends  Request
 
   case class CallListResponse(calls: List[CallInfo], page: Int, limit: Int, count: Long, filter: Option[CallFilter]) extends Response
 
@@ -38,18 +37,18 @@ object Model {
   implicit val CallInfoCodec: Codec[CallInfo] = io.circe.generic.semiauto.deriveCodec
   implicit val CallFilterCodec: Codec[CallFilter] = io.circe.generic.semiauto.deriveCodec
 
-  implicit val dateTimeFormat: DateTimeFormatter = DateTimeFormat.forPattern("dd.MM.yyyy")
-  implicit val schemaForTimestamp: Schema[Timestamp] = Schema(SInteger())
-  implicit val TimestampFormat : Encoder[Timestamp] with Decoder[Timestamp] = new Encoder[Timestamp] with Decoder[Timestamp] {
-    override def apply(a: Timestamp): Json = Encoder.encodeLong.apply(a.getTime)
-    override def apply(c: HCursor): Decoder.Result[Timestamp] = Decoder.decodeLong.map(s => new Timestamp(s)).apply(c)
-  }
-
-  implicit val schemaForDateTime: Schema[DateTime] = Schema(SString())
-  implicit val DateTimeCodec : Encoder[DateTime] with Decoder[DateTime] = new Encoder[DateTime] with Decoder[DateTime] {
-    override def apply(a: DateTime): Json = Encoder.encodeString.apply(a.toString(dateTimeFormat))
-    override def apply(c: HCursor): Decoder.Result[DateTime] = Decoder.decodeString.map(s => DateTime.parse(s, dateTimeFormat)).apply(c)
-  }
+//  implicit val InstantFormat: InstantFormatter = InstantFormat.forPattern("dd.MM.yyyy")
+//  implicit val schemaForTimestamp: Schema[Timestamp] = Schema(SInteger())
+//  implicit val TimestampFormat : Encoder[Timestamp] with Decoder[Timestamp] = new Encoder[Timestamp] with Decoder[Timestamp] {
+//    override def apply(a: Timestamp): Json = Encoder.encodeLong.apply(a.getTime)
+//    override def apply(c: HCursor): Decoder.Result[Timestamp] = Decoder.decodeLong.map(s => new Timestamp(s)).apply(c)
+//  }
+//
+//  implicit val schemaForInstant: Schema[Instant] = Schema(SString())
+//  implicit val InstantCodec : Encoder[Instant] with Decoder[Instant] = new Encoder[Instant] with Decoder[Instant] {
+//    override def apply(a: Instant): Json = Encoder.encodeString.apply(a.toString(InstantFormat))
+//    override def apply(c: HCursor): Decoder.Result[Instant] = Decoder.decodeString.map(s => Instant.parse(s, InstantFormat)).apply(c)
+//  }
 
 
 

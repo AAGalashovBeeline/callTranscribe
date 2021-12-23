@@ -7,6 +7,8 @@ import sttp.tapir.generic.auto.schemaForCaseClass
 import sttp.tapir.json.circe.jsonBody
 import sttp.tapir.ztapir._
 
+import sttp.tapir.generic.auto._
+
 object CallService {
 
   val tapEP: Seq[ZServerEndpoint[Any, _ <: Request, String, _ <: Response]] = List(

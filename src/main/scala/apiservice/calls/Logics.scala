@@ -9,6 +9,7 @@ import org.joda.time.DateTime
 import doobie.implicits.javasql._
 
 import java.sql.Timestamp
+import java.time.Instant
 
 
 object Logics {
@@ -44,14 +45,14 @@ object Logics {
       .transact(dbConnect)
 
 
-  def getCalls(ani: String, dateFrom: DateTime, dateTo: Option[DateTime]): Task[List[CallInfo]] = {
-    val dateFromTs: Timestamp = new Timestamp(dateFrom.millisOfDay.withMinimumValue.getMillis)
-    val dateToTs =  new Timestamp(dateTo.getOrElse(dateFrom).millisOfDay.withMaximumValue.getMillis)
+  def getCalls(ani: String, dateFrom: Instant, dateTo: Option[Instant]): Task[List[CallInfo]] = {
+//    val dateFromTs: Timestamp = new Timestamp(dateFrom.millisOfDay.withMinimumValue.getMillis)
+//    val dateToTs =  new Timestamp(dateTo.getOrElse(dateFrom).millisOfDay.withMaximumValue.getMillis)
 
     sql"""
          SELECT * FROM calls
          WHERE ani=$ani
-           AND date BETWEEN $dateFromTs AND $dateToTs
+           AND date BETWEEN $dateFrom AND $dateTo
        """
       .query[CallInfo]
       .to[List]
