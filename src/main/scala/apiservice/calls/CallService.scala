@@ -54,10 +54,9 @@ object CallService {
           oneOfDefaultMapping(jsonBody[String].description("unknown"))
         )
       }
-      //18-01 getCalls возвращаем List[CallInfo]
       .zServerLogic { req =>
         getCalls(req.ani, req.dateFrom, req.dateTo)
-          .map(CallsInfoResp)   //CallInfoResp хранит в себе List[CallInfo]
+          .map(CallsInfoResp)
           .mapError(e => e.toString)
       }
 
