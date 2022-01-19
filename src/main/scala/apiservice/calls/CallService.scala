@@ -6,21 +6,22 @@ import io.circe.generic.auto._
 import sttp.tapir.generic.auto.schemaForCaseClass
 import sttp.tapir.json.circe.jsonBody
 import sttp.tapir.ztapir._
-
 import sttp.tapir.generic.auto._
+import zio.ZIO
 
 object CallService {
 
   val tapEP: Seq[ZServerEndpoint[Any, _ <: Request, String, _ <: Response]] = List(
-//       sttp.tapir.endpoint
-//        .post
-//        .in("pbx"/"create-call")
-//        .in(jsonBody[CreateCallReq])
-//        .out(jsonBody[CreateCallResp])
-//        .zServerLogic({ req =>
-//            createCallPBX(req.externalCallId, req.ani)
-//              .mapError(x => x.toString)
-//        }),
+       sttp.tapir.endpoint
+        .post
+        .in("pbx"/"create-call")
+        .in(jsonBody[CreateCallReq])
+        .out(jsonBody[CreateCallResp])
+        .zServerLogic({ req =>
+            createCallPBX(req.externalCallId, req.ani)
+              .map(CreateCallResp)
+              .mapError(x => x.toString)
+        }),
 
     sttp.tapir.endpoint
       .post.description("транскриб из АТС")
