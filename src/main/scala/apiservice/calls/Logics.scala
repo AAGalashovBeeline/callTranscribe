@@ -55,7 +55,7 @@ object Logics {
     sql"""
          SELECT * FROM calls
          WHERE ani=$ani
-           AND date BETWEEN $dateFrom AND $dateTo
+           AND date >= $dateFrom
        """
       .query[CallInfo]
       .to[List]

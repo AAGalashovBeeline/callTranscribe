@@ -46,7 +46,7 @@ object CallService {
 
     sttp.tapir.endpoint
       .post
-      .in("getCalls")
+      .in("pbx"/"get-calls")
       .in(jsonBody[CallFilter])
       .out(jsonBody[CallsInfoResp])
       .errorOut {
