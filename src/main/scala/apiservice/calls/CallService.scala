@@ -17,10 +17,15 @@ object CallService {
         .in("pbx"/"create-call")
         .in(jsonBody[CreateCallReq])
         .out(jsonBody[CreateCallResp])
+         .errorOut {
+           oneOf[String](
+             oneOfDefaultMapping(jsonBody[String].description("unknown"))
+           )
+         }
         .zServerLogic({ req =>
             createCallPBX(req.externalCallId, req.ani)
               .map(CreateCallResp)
-              .mapError(x => x.toString)
+              .mapError(e => e.toString)
         }),
 
     sttp.tapir.endpoint
