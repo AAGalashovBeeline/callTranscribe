@@ -15,10 +15,10 @@ object Model {
   case class CreateCallReq(externalCallId: String, ani: String) extends  Request
   case class CreateCallResp(id: Long) extends Response
 
-  case class CreateTranscribeReq(callId: Long, transcribe: String) extends  Request
+  case class CreateTranscribeReq(callId: Long, CreateCallReq: String) extends  Request
   case class CreateTranscribeResp(id: Long, callId: Long, transcribe: String) extends Response
 
-  case class CallInfo(id: Long, externalCallId: String, ani: String, date: Timestamp) extends  Response
+  case class CallInfo(id: Long, externalCallId: String, ani: String, date: Instant) extends  Response
   case class CallsInfoResp(calls: List[CallInfo]) extends  Response
 
 
@@ -36,6 +36,8 @@ object Model {
 
   implicit val CallInfoCodec: Codec[CallInfo] = io.circe.generic.semiauto.deriveCodec
   implicit val CallFilterCodec: Codec[CallFilter] = io.circe.generic.semiauto.deriveCodec
+
+
 
 //  implicit val InstantFormat: InstantFormatter = InstantFormat.forPattern("dd.MM.yyyy")
 //  implicit val schemaForTimestamp: Schema[Timestamp] = Schema(SInteger())

@@ -12,20 +12,19 @@ import sttp.tapir.generic.auto._
 object CallService {
 
   val tapEP: Seq[ZServerEndpoint[Any, _ <: Request, String, _ <: Response]] = List(
-    //   sttp.tapir.endpoint
-    //    .post
-    //    .in("createCall")
-    //    .in(jsonBody[CreateCallReq])
-    //    .out(jsonBody[Long])
-    //    .zServerLogic({ req =>
-    //      ZIO.succeed(
-    //        unsafeRunTask(createCallPBX(req.externalCallId, req.ani))
-    //      )
-    //    }),
-    //
+//       sttp.tapir.endpoint
+//        .post
+//        .in("pbx"/"create-call")
+//        .in(jsonBody[CreateCallReq])
+//        .out(jsonBody[CreateCallResp])
+//        .zServerLogic({ req =>
+//            createCallPBX(req.externalCallId, req.ani)
+//              .mapError(x => x.toString)
+//        }),
+
     sttp.tapir.endpoint
-      .post
-      .in("createTranscribe")
+      .post.description("транскриб из АТС")
+      .in("pbx"/"create-transcribe")
       .in(jsonBody[CreateTranscribeReq])
       .out(jsonBody[CreateTranscribeResp])
       .errorOut {
@@ -49,9 +48,10 @@ object CallService {
           oneOfDefaultMapping(jsonBody[String].description("unknown"))
         )
       }
+      //18-01 getCalls возвращаем List[CallInfo]
       .zServerLogic { req =>
         getCalls(req.ani, req.dateFrom, req.dateTo)
-          .map(CallsInfoResp)
+          .map(CallsInfoResp)   //CallInfoResp хранит в себе List[CallInfo]
           .mapError(e => e.toString)
       }
 

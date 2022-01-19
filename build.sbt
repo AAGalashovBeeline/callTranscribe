@@ -6,6 +6,8 @@ scalaVersion := "2.13.7"
 
 lazy val doobieVersion = "1.0.0-RC1"
 
+lazy val tapirVersion = "0.18.1"         //18-01 0.20.0-M5 error
+
 lazy val root = (project in file("."))
   .settings(
     libraryDependencies ++= Seq(
@@ -16,11 +18,14 @@ lazy val root = (project in file("."))
       "io.circe" %% "circe-generic" % "0.14.1",
 
 
-      "com.softwaremill.sttp.tapir" %% "tapir-core" % "0.18.1",
-      "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % "0.18.1",
-      "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs" % "0.18.1",
-      "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % "0.18.1",
-      "com.softwaremill.sttp.tapir" %% "tapir-zio-http" % "0.18.1",
+      "com.softwaremill.sttp.tapir" %% "tapir-core" % tapirVersion,
+      "com.softwaremill.sttp.tapir" %% "tapir-json-circe" % tapirVersion,
+      "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs" % tapirVersion,
+      "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % tapirVersion,
+      "com.softwaremill.sttp.tapir" %% "tapir-zio-http" % tapirVersion,
+
+      "com.softwaremill.sttp.tapir" %% "tapir-refined" % tapirVersion,
+      "com.softwaremill.sttp.tapir" %%"tapir-swagger-ui-zio-http" % tapirVersion,
 
 
       "org.tpolecat" %% "doobie-core"     % doobieVersion,
@@ -29,8 +34,6 @@ lazy val root = (project in file("."))
 
       "dev.zio" %% "zio-interop-cats" % "3.0.2.0",
 
-      "joda-time" % "joda-time" % "2.10.10",
-
-      "com.softwaremill.sttp.tapir" %%"tapir-swagger-ui-zio-http" % "0.18.1"
+      "joda-time" % "joda-time" % "2.10.10"
     ),
   )

@@ -8,6 +8,9 @@ import zio.interop.catz._
 import org.joda.time.DateTime
 import doobie.implicits.javasql._
 
+import doobie.postgres._
+import doobie.postgres.implicits._
+
 import java.sql.Timestamp
 import java.time.Instant
 
@@ -58,5 +61,30 @@ object Logics {
       .to[List]
       .transact(dbConnect)
   }
+
+
+
+  //=======================================================================================
+
+//  def createCallPBX(external_callid: String, ani: String): Task[Long] = {
+//    sql"""
+//  INSERT INTO calls (external_callid, ani)
+//  VALUES ($external_callid, $ani) RETURNING id
+//  """.query[Long]
+//      .unique
+//      .transact(xa)
+//  }
+//
+//  type NewTranscribe = (Int, String)
+//
+//  def createTranscribe(calls_id: Int, transcribe: List[String]): Task[Int] = {
+//
+//    val listTranscribe: List[NewTranscribe] = transcribe.map(x => new NewTranscribe(calls_id, x))
+//
+//    val sql = "INSERT INTO transcribes (calls_id, transcribe) values (?, ?)"
+//    Update[NewTranscribe](sql)
+//      .updateMany(listTranscribe)
+//      .transact(xa)
+//  }
 }
 

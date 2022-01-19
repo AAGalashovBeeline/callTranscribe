@@ -39,8 +39,8 @@ object Main extends zio.App {
   val webServer: ZIO[Blocking, Throwable, Nothing] = Server.start(3000,ep <> swagger)
 
   override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] =
-    webServer.fold(_ => {
-      println("Alarm!")
+    webServer.fold(e => {
+      println(e)
       ExitCode.apply(-666)
     }, _ => ExitCode.success)
 }
