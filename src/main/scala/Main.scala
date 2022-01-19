@@ -9,6 +9,7 @@ import zhttp.service.Server
 import zio._
 import zio.blocking.Blocking
 
+
 object Main extends zio.App {
 
   val globalInfo: Info = Info(
@@ -38,7 +39,28 @@ object Main extends zio.App {
   val ep: Http[Any, Throwable, Request, Response[Any, Throwable]] = CallService.tapEP.map(ZioHttpInterpreter().toHttp(_)).reduce(_ <> _)
   val webServer: ZIO[Blocking, Throwable, Nothing] = Server.start(3000,ep <> swagger)
 
-  override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] =
+  //23-12 old
+//  override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] =
+//    webServer.fold(e => {
+//      println(e)
+//      ExitCode.apply(-666)
+//    }, _ => ExitCode.success)
+//
+//  //tutorial
+//  def run(args: List[String]): URIO[ZEnv, ExitCode] =
+//    zio.provideLayer(nameLayer).as(ExitCode.success)
+
+
+  val zio: ZIO[Has[String], Nothing, Unit] = for {
+    name <- ZIO.access[Has[String]](_.get)
+    _    <- UIO(println(s"Hello, $name!"))
+  } yield ()
+
+  val nameLayer: ULayer[Has[String]] = ZLayer.succeed("Adam")
+
+  def run(args: List[String]): URIO[ZEnv, ExitCode] =
+    zio.provideLayer(nameLayer).as(ExitCode.success)
+
     webServer.fold(e => {
       println(e)
       ExitCode.apply(-666)

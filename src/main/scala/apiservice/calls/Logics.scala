@@ -64,16 +64,9 @@ object Logics {
 
 
 
-  //=======================================================================================
 
-//  def createCallPBX(external_callid: String, ani: String): Task[Long] = {
-//    sql"""
-//  INSERT INTO calls (external_callid, ani)
-//  VALUES ($external_callid, $ani) RETURNING id
-//  """.query[Long]
-//      .unique
-//      .transact(xa)
-//  }
+  //List[String]=======================================================================================
+
 //
 //  type NewTranscribe = (Int, String)
 //
