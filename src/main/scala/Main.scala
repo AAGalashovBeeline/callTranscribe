@@ -39,29 +39,21 @@ object Main extends zio.App {
   val ep: Http[Any, Throwable, Request, Response[Any, Throwable]] = CallService.tapEP.map(ZioHttpInterpreter().toHttp(_)).reduce(_ <> _)
   val webServer: ZIO[Blocking, Throwable, Nothing] = Server.start(3000,ep <> swagger)
 
-  //23-12 old
-//  override def run(args: List[String]): URIO[zio.ZEnv, ExitCode] =
-//    webServer.fold(e => {
-//      println(e)
-//      ExitCode.apply(-666)
-//    }, _ => ExitCode.success)
-//
-//  //tutorial
-//  def run(args: List[String]): URIO[ZEnv, ExitCode] =
-//    zio.provideLayer(nameLayer).as(ExitCode.success)
 
-
+  //19-01 tutorial
   val zio: ZIO[Has[String], Nothing, Unit] = for {
     name <- ZIO.access[Has[String]](_.get)
     _    <- UIO(println(s"Hello, $name!"))
   } yield ()
 
+  //tutorial
   val nameLayer: ULayer[Has[String]] = ZLayer.succeed("Adam")
 
   def run(args: List[String]): URIO[ZEnv, ExitCode] =
-    zio.provideLayer(nameLayer).as(ExitCode.success)
+    zio.provideLayer(nameLayer).exitCode
 
-    webServer.fold(e => {
+  webServer
+    .fold(e => {
       println(e)
       ExitCode.apply(-666)
     }, _ => ExitCode.success)

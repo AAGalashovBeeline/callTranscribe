@@ -34,6 +34,8 @@ lazy val root = (project in file("."))
 
       "dev.zio" %% "zio-interop-cats" % "3.0.2.0",
 
-      "joda-time" % "joda-time" % "2.10.10"
+      "joda-time" % "joda-time" % "2.10.10",
+
+      "com.github.pureconfig" %% "pureconfig" % "0.16.0"
     ),
   )
