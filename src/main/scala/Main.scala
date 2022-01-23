@@ -1,4 +1,5 @@
 import apiservice.calls.CallService
+import apiservice.calls.repository.CallsRepository.HasLogicsClient
 import sttp.tapir.docs.openapi.OpenAPIDocsInterpreter
 import sttp.tapir.openapi.circe.yaml.RichOpenAPI
 import sttp.tapir.openapi.{Contact, Info}
@@ -36,8 +37,8 @@ object Main extends zio.App {
       ZIO.succeed(Response.text(req.getBodyAsString.getOrElse("kek")))
   }
 
-  val ep: Http[Any, Throwable, Request, Response[Any, Throwable]] = CallService.tapEP.map(ZioHttpInterpreter().toHttp(_)).reduce(_ <> _)
-  val webServer: ZIO[Blocking, Throwable, Nothing] = Server.start(3000,ep <> swagger)
+  val ep: Http[HasLogicsClient, Throwable, Request, Response[HasLogicsClient, Throwable]] = CallService.tapEP.map(ZioHttpInterpreter().toHttp(_)).reduce(_ <> _)
+  val webServer: ZIO[Blocking with HasLogicsClient, Throwable, Nothing] = Server.start(3000,ep <> swagger)
 
 
   //19-01 tutorial
