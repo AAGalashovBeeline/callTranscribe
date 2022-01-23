@@ -1,15 +1,25 @@
 package apiservice.calls
 
-import apiservice.calls.Logics._
 import apiservice.calls.Model._
+import apiservice.calls.repository.CallsRepository
 import io.circe.generic.auto._
 import sttp.tapir.generic.auto.schemaForCaseClass
 import sttp.tapir.json.circe.jsonBody
 import sttp.tapir.ztapir._
 import sttp.tapir.generic.auto._
-import zio.ZIO
+import zio.{Has, URIO, ZIO}
+import zio.interop.catz._
 
+//extends Logics.Service
 object CallService {
+
+//  val asdsad: URIO[Has[CallsRepository.Service], CallsRepository.Service] = ZIO.service[CallsRepository.Service]
+//  type Logics = Has[CallsRepository.Service]
+//
+//  val asdsa = for {
+//    tg <- ZIO.service[CallsRepository.Service]
+//  } Yield tg
+
 
   val tapEP: Seq[ZServerEndpoint[Any, _ <: Request, String, _ <: Response]] = List(
        sttp.tapir.endpoint

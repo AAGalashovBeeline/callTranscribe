@@ -1,22 +1,15 @@
-package apiservice.calls
+package apiservice.calls.repository
 
-import apiservice.calls.Model.{CallInfo, CallsInfoResp, CreateTranscribeResp}
-import apiservice.calls.config.AppConfig
-import apiservice.calls.config.GlobalCfg.HasConfig
+import apiservice.calls.Model.{CallInfo, CreateTranscribeResp}
 import apiservice.calls.transactor.DbTransactor
 import doobie._
 import doobie.implicits._
 import zio._
 import zio.interop.catz._
-import org.joda.time.DateTime
-import doobie.implicits.javasql._
-import doobie.postgres._
-import doobie.postgres.implicits._
 
-import java.sql.Timestamp
 import java.time.Instant
 
-class Logics(dbConnect: Transactor[Task]) extends Logics.Service {
+class CallsRepository(dbConnect: Transactor[Task]) extends CallsRepository.Service {
 
   def createCallPBX(externalCallId: String, ani: String): Task[Long] =
     sql"""
@@ -70,7 +63,7 @@ class Logics(dbConnect: Transactor[Task]) extends Logics.Service {
 }
 
 
-object Logics {
+object CallsRepository {
   type HasLogicsClient = Has[Service]
 
   trait Service {
@@ -90,7 +83,7 @@ object Logics {
 
   val live: URLayer[DbTransactor, HasLogicsClient] =
     ZLayer.fromService { resource =>
-      new Logics(resource.dbConnect)
+      new CallsRepository(resource.dbConnect)
     }
 
 
