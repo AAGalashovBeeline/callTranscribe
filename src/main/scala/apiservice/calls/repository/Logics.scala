@@ -1,15 +1,17 @@
 package apiservice.calls.repository
 
 import apiservice.calls.Model.{CallInfo, CreateTranscribeResp}
-import apiservice.calls.transactor.DbTransactor
+//import apiservice.calls.transactor.DbTransactor
 import doobie._
 import doobie.implicits._
 import zio._
 import zio.interop.catz._
 
 import java.time.Instant
+import doobie.postgres.implicits._
 
-class CallsRepository(dbConnect: Transactor[Task]) extends CallsRepository.Service {
+
+class Logics(dbConnect: Transactor[Task]) extends Logics.Service {
 
   def createCallPBX(externalCallId: String, ani: String): Task[Long] =
     sql"""
@@ -63,7 +65,7 @@ class CallsRepository(dbConnect: Transactor[Task]) extends CallsRepository.Servi
 }
 
 
-object CallsRepository {
+object Logics {
   type HasLogicsClient = Has[Service]
 
   trait Service {
@@ -79,12 +81,12 @@ object CallsRepository {
 //      //client <- ZIO.service[HttpClient.Service]
 //    } yield new Logics(cfg)).toLayer
 
-  def createCallPBX111(externalCallId: String, ani: String): RIO[HasLogicsClient, Long]
-  = RIO.accessM(_.get.createCallPBX(externalCallId, ani))
+  def createCallPBX111(externalCallId: String, ani: String): RIO[HasLogicsClient, Long] =
+    RIO.accessM(_.get.createCallPBX(externalCallId, ani))
 
   val live: URLayer[DbTransactor, HasLogicsClient] =
     ZLayer.fromService { resource =>
-      new CallsRepository(resource.dbConnect)
+      new Logics(resource.dbConnect)
     }
 
 

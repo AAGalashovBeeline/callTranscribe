@@ -1,8 +1,8 @@
 package apiservice.calls
 
 import apiservice.calls.Model._
-import apiservice.calls.repository.CallsRepository
-import apiservice.calls.repository.CallsRepository.{HasLogicsClient, createCallPBX111}
+import apiservice.calls.repository.Logics
+import apiservice.calls.repository.Logics.{HasLogicsClient, createCallPBX111}
 import io.circe.generic.auto._
 import sttp.tapir.generic.auto.schemaForCaseClass
 import sttp.tapir.json.circe.jsonBody

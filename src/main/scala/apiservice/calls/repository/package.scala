@@ -1,24 +1,27 @@
 package apiservice.calls
 
-import apiservice.calls.config.DbConfig
+import apiservice.calls.config.Configuration.DbConfig
 import doobie.util.transactor.Transactor
 import zio.{Has, Task, URLayer, ZLayer}
-
 import zio.interop.catz._             //?????
 
 
 package object repository {
 
-  type DbTransactor = Has[DbTransactor.Resource]
+  //Has[DbTransactor222.Resource] объект с трейтом Resource и одним полем val xa: Transactor[Task]
+  type DbTransactor111 = Has[DbTransactor222.Resource]
 
   implicit val zioRuntime: zio.Runtime[zio.ZEnv] = zio.Runtime.default
 
-  object DbTransactor {
+  object DbTransactor222 {
     trait Resource {
       val dbConnect: Transactor[Task]
     }
 
-    val h2: URLayer[Has[DbConfig], DbTransactor] = ZLayer.fromService { db =>
+    //URLayer[Has[DbConfig], DbTransactor] указываем, какие слои предоставляем
+    //предоставляем type DbTransactor111 (Has[DbTransactor222.Resource] ++
+    //++ объект с трейтом Resource и одним полем val xa: Transactor[Task])
+    val postgres: URLayer[Has[DbConfig], DbTransactor111] = ZLayer.fromService { db =>
       new Resource {
         val dbConnect: Transactor[Task] =
           Transactor.fromDriverManager[Task](db.driver, db.url, db.user, db.password)
