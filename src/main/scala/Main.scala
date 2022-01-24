@@ -1,8 +1,5 @@
 import apiservice.calls.CallService
-import apiservice.calls.Environments.testEnvironment
-import apiservice.calls.config.{DbConfig, GlobalCfg}
-import apiservice.calls.config.GlobalCfg.HasConfig
-import apiservice.calls.repository.{DbTransactor, Logics}
+import apiservice.calls.Environments.{testEnvironment2}
 import apiservice.calls.repository.Logics.HasLogicsClient
 import zio.blocking.Blocking
 import zio.clock.Clock
@@ -80,6 +77,6 @@ object Main extends zio.App {
     //zio.URIO[DbTransactor with Any with Console, ExitCode]  //Logics.live ++ Blocking.live
     //zio.URIO[DbTransactor with Console, ExitCode] //Logics.live
     //zio.URIO[DbTransactor with Any with Has[DbConfig] with Console, ExitCode] //Logics.live ++ Blocking.live ++ DbTransactor.h2
-    program.provideLayer(testEnvironment).exitCode
+    program.provideLayer(testEnvironment2).exitCode
   }
 }

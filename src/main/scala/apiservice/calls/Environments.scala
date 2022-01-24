@@ -4,6 +4,7 @@ import apiservice.calls.config.Configuration
 import apiservice.calls.repository.Logics.HasLogicsClient
 import apiservice.calls.repository.{DbTransactor111, DbTransactor222, Logics}
 import zio.ULayer
+import zio.blocking.Blocking
 import zio.clock.Clock
 
 
@@ -19,7 +20,7 @@ object Environments {
   //репозиторий принимает слой? транзактора
   val logicsClient: ULayer[HasLogicsClient] = dbTransactor >>> Logics.live
   //итоговый слой конфигурации (Has[DbConfig] и Has[HttpServerConfig]) и методов работы с бд (с тразактором)
-  val testEnvironment: ULayer[AppEnvironment] = httpServerEnvironment ++ logicsClient
+  val testEnvironment2 = httpServerEnvironment ++ logicsClient ++ Blocking.live
 
 
 }
