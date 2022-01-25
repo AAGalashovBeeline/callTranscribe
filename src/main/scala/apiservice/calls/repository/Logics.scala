@@ -87,7 +87,7 @@ object Logics {
   def createCallPBX111(externalCallId: String, ani: String): RIO[HasLogicsClient, Long] =
     RIO.accessM[HasLogicsClient](_.get.createCallPBX(externalCallId, ani))
 
-  val live: URLayer[DbTransactor, HasLogicsClient] =
+  val live: URLayer[DbTransactor111, HasLogicsClient] =
     ZLayer.fromService { resource =>
       new Logics(resource.dbConnect)
     }
