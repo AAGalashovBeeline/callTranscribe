@@ -14,13 +14,14 @@ object Environments {
   type AppEnvironment = HttpServerEnvironment with HasLogicsClient
 
   val httpServerEnvironment: ULayer[HttpServerEnvironment] = Configuration.live ++ Clock.live
+  //">>>" подает выходные сервисы этого уровня на вход указанного уровня
   //чтобы заполнить конфигом тразактор, нужны данные из конфига (Has[DbConfig]) ++
   //++ мапим в Has[DbConfig] и Has[HttpServerConfig], который объединяется в type Configuration (в пакете config)
   val dbTransactor: ULayer[DbTransactor111] = Configuration.live >>> DbTransactor222.postgres
   //репозиторий принимает слой? транзактора
   val logicsClient: ULayer[HasLogicsClient] = dbTransactor >>> Logics.live
   //итоговый слой конфигурации (Has[DbConfig] и Has[HttpServerConfig]) и методов работы с бд (с тразактором)
-  val testEnvironment2 = httpServerEnvironment ++ logicsClient ++ Blocking.live
+  val appEnvironment = httpServerEnvironment ++ logicsClient ++ Blocking.live
 
 
 }

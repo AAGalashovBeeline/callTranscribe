@@ -11,16 +11,8 @@ import sttp.tapir.generic.auto._
 import zio.{Has, URIO, ZIO}
 import zio.interop.catz._
 
-//extends Logics.Service
+
 object CallService {
-
-//  val asdsad: URIO[Has[CallsRepository.Service], CallsRepository.Service] = ZIO.service[CallsRepository.Service]
-//  type Logics = Has[CallsRepository.Service]
-//
-//  val asdsa = for {
-//    tg <- ZIO.service[CallsRepository.Service]
-//  } Yield tg
-
 
   val tapEP: Seq[ZServerEndpoint[HasLogicsClient, _ <: Request, String, _ <: Response]] = List(
        sttp.tapir.endpoint

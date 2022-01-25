@@ -1,7 +1,6 @@
 package apiservice.calls.repository
 
 import apiservice.calls.Model.{CallInfo, CreateTranscribeResp}
-//import apiservice.calls.transactor.DbTransactor
 import doobie._
 import doobie.implicits._
 import zio._
@@ -20,7 +19,7 @@ class Logics(dbConnect: Transactor[Task]) extends Logics.Service {
        """
       .query[Long]
       .unique
-      .transact(dbConnect)      //transactor.Transactor
+      .transact(dbConnect)
 
 
   def createTranscribe(callId: Long, transcribe: String): Task[CreateTranscribeResp] =
@@ -74,13 +73,6 @@ object Logics {
     def getCalls(ani: String, dateFrom: Instant, dateTo: Option[Instant]): Task[List[CallInfo]]
   }
 
-  //val live: ZLayer[HasConfig with HasHttpClient, Throwable, HasLogicsClient] =
-//  val live: ZLayer[HasConfig, Throwable, HasLogicsClient] =
-//    (for {
-//      cfg <- AppConfig.get
-//      //client <- ZIO.service[HttpClient.Service]
-//    } yield new Logics(cfg)).toLayer
-
   //@accessible макрол для генерации таких методов ставится над object Logic:
   //-добавить zio-marcos в зависимости
   //-scalaOptions -Ymacro...
@@ -91,17 +83,5 @@ object Logics {
     ZLayer.fromService { resource =>
       new Logics(resource.dbConnect)
     }
-
-
-//  implicit val zioRuntime: zio.Runtime[zio.ZEnv] = zio.Runtime.default
-//
-//  def dbConnect: Transactor[Task] =
-//    Transactor.fromDriverManager[Task](
-//      "org.postgresql.Driver",
-//      "jdbc:postgresql://localhost:5432/testDB",
-//      "postgres",
-//      "postgres",
-//    )
-
 }
 
