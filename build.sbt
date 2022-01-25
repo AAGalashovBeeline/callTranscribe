@@ -12,6 +12,7 @@ lazy val root = (project in file("."))
   .settings(
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio" % "1.0.10",
+      "dev.zio" %% "zio-macros" % "1.0.10",
       "io.d11" %% "zhttp" % "1.0.0.0-RC17",
 
 
@@ -38,4 +39,5 @@ lazy val root = (project in file("."))
 
       "com.github.pureconfig" %% "pureconfig" % "0.16.0"
     ),
+    scalacOptions += "-Ymacro-annotations"        //включаем макросы
   )

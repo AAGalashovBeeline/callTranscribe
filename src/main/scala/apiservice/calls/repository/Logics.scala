@@ -8,6 +8,7 @@ import zio.interop.catz._
 
 import java.time.Instant
 import doobie.postgres.implicits._
+import zio.macros.accessible
 
 
 class Logics(dbConnect: Transactor[Task]) extends Logics.Service {
@@ -63,7 +64,7 @@ class Logics(dbConnect: Transactor[Task]) extends Logics.Service {
 
 }
 
-
+//@accessible
 object Logics {
   type HasLogicsClient = Has[Service]
 
@@ -76,8 +77,15 @@ object Logics {
   //@accessible макрол для генерации таких методов ставится над object Logic:
   //-добавить zio-marcos в зависимости
   //-scalaOptions -Ymacro...
+  //RIO[HasLogicsClient, Long]  - Long возвращаем
   def createCallPBX111(externalCallId: String, ani: String): RIO[HasLogicsClient, Long] =
     RIO.accessM[HasLogicsClient](_.get.createCallPBX(externalCallId, ani))
+
+  def createTranscribe111(callId: Long, transcribe: String): RIO[HasLogicsClient, CreateTranscribeResp] =
+    RIO.accessM[HasLogicsClient](_.get.createTranscribe(callId, transcribe))
+
+  def getCalls111(ani: String, dateFrom: Instant, dateTo: Option[Instant]): RIO[HasLogicsClient, List[CallInfo]] =
+    RIO.accessM[HasLogicsClient](_.get.getCalls(ani, dateFrom, dateTo))
 
   val live: URLayer[DbTransactor111, HasLogicsClient] =
     ZLayer.fromService { resource =>
