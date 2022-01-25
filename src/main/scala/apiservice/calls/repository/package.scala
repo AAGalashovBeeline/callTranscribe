@@ -21,8 +21,13 @@ package object repository {
     //URLayer[Has[DbConfig], DbTransactor] указываем, какие слои предоставляем
     //предоставляем type DbTransactor111 (Has[DbTransactor222.Resource] ++
     //++ объект с трейтом Resource и одним полем val xa: Transactor[Task])
+
+    //ZLayer.fromService[DbConfig, DbTransactor111] так должно быть написано? из левого получаем правый
+    //"db =>" это DbConfig
     val postgres: URLayer[Has[DbConfig], DbTransactor111] = ZLayer.fromService { db =>
+      //создание анонимного экземпляра анонимного класса
       new Resource {
+        //реализовать нужно только 1 метод. Даже если внутри Resource их 100
         val dbConnect: Transactor[Task] =
           Transactor.fromDriverManager[Task](db.driver, db.url, db.user, db.password)
       }

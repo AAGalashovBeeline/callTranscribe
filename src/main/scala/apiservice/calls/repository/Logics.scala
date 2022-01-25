@@ -81,8 +81,11 @@ object Logics {
 //      //client <- ZIO.service[HttpClient.Service]
 //    } yield new Logics(cfg)).toLayer
 
+  //@accessible макрол для генерации таких методов ставится над object Logic:
+  //-добавить zio-marcos в зависимости
+  //-scalaOptions -Ymacro...
   def createCallPBX111(externalCallId: String, ani: String): RIO[HasLogicsClient, Long] =
-    RIO.accessM(_.get.createCallPBX(externalCallId, ani))
+    RIO.accessM[HasLogicsClient](_.get.createCallPBX(externalCallId, ani))
 
   val live: URLayer[DbTransactor, HasLogicsClient] =
     ZLayer.fromService { resource =>
