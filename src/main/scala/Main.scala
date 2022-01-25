@@ -1,5 +1,5 @@
 import apiservice.calls.CallService
-import apiservice.calls.Environments.{testEnvironment2}
+import apiservice.calls.Environments.testEnvironment2
 import apiservice.calls.repository.Logics.HasLogicsClient
 import zio.blocking.Blocking
 import zio.clock.Clock
@@ -43,8 +43,11 @@ object Main extends zio.App {
       ZIO.succeed(Response.text(req.getBodyAsString.getOrElse("kek")))
   }
 
-  val ep: Http[HasLogicsClient, Throwable, Request, Response[HasLogicsClient, Throwable]] = CallService.tapEP.map(ZioHttpInterpreter().toHttp(_)).reduce(_ <> _)
-  val webServer: ZIO[Blocking with HasLogicsClient, Throwable, Nothing] = Server.start(3000,ep <> swagger)
+  val ep: Http[HasLogicsClient, Throwable, Request, Response[HasLogicsClient, Throwable]] =
+    CallService.tapEP.map(ZioHttpInterpreter().toHttp(_)).reduce(_ <> _)
+
+  val webServer: ZIO[Blocking with HasLogicsClient, Throwable, Nothing] =
+    Server.start(3000,ep <> swagger)
 
   //">>>" подает выходные сервисы этого уровня на вход указанного уровня
 //  val dbTransactor = GlobalCfg.live //>>> DbTransactor.h2
