@@ -12,6 +12,7 @@ lazy val root = (project in file("."))
   .settings(
     libraryDependencies ++= Seq(
       "dev.zio" %% "zio" % "1.0.10",
+      "dev.zio" %% "zio-macros" % "1.0.10",
       "io.d11" %% "zhttp" % "1.0.0.0-RC17",
 
 
@@ -34,6 +35,9 @@ lazy val root = (project in file("."))
 
       "dev.zio" %% "zio-interop-cats" % "3.0.2.0",
 
-      "joda-time" % "joda-time" % "2.10.10"
+      "joda-time" % "joda-time" % "2.10.10",
+
+      "com.github.pureconfig" %% "pureconfig" % "0.16.0"
     ),
+    scalacOptions += "-Ymacro-annotations"        //включаем макросы
   )
