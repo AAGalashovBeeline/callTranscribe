@@ -8,8 +8,6 @@ import sttp.tapir.generic.auto.schemaForCaseClass
 import sttp.tapir.json.circe.jsonBody
 import sttp.tapir.ztapir._
 import sttp.tapir.generic.auto._
-import zio.{Has, URIO, ZIO}
-import zio.interop.catz._
 
 
 object CallService {
@@ -61,6 +59,5 @@ object CallService {
           .map(CallsInfoResp)
           .mapError(e => e.toString)
       }
-
   )
 }
