@@ -2,7 +2,7 @@ package apiservice.calls
 
 import apiservice.calls.Model._
 import apiservice.calls.repository.Logics
-import apiservice.calls.repository.Logics.{HasLogicsClient, createCallPBX111, createTranscribe111, getCalls111}
+import apiservice.calls.repository.Logics.{HasLogicsClient}
 import io.circe.generic.auto._
 import sttp.tapir.generic.auto.schemaForCaseClass
 import sttp.tapir.json.circe.jsonBody
@@ -26,7 +26,7 @@ object CallService {
            )
          }
         .zServerLogic({ req =>
-            createCallPBX111(req.externalCallId, req.ani)
+            Logics.Service.createCallPBX(req.externalCallId, req.ani)
               .map(CreateCallResp)
               .mapError(e => e.toString)
         }),
@@ -42,7 +42,7 @@ object CallService {
         )
       }
       .zServerLogic({ req =>
-        createTranscribe111(req.callId, req.transcribe)
+        Logics.Service.createTranscribe(req.callId, req.transcribe)
           .mapError(e => e.toString)
       }),
 
@@ -57,7 +57,7 @@ object CallService {
         )
       }
       .zServerLogic { req =>
-        getCalls111(req.ani, req.dateFrom, req.dateTo)
+        Logics.Service.getCalls(req.ani, req.dateFrom, req.dateTo)
           .map(CallsInfoResp)
           .mapError(e => e.toString)
       }
