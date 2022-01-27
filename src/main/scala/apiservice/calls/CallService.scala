@@ -25,7 +25,6 @@ object CallService {
          }
         .zServerLogic({ req =>
             Logics.createCallPBX(req.externalCallId, req.ani)
-            //Logics.Service.createCallPBX(req.externalCallId, req.ani)
               .map(CreateCallResp)
               .mapError(e => e.toString)
         }),
