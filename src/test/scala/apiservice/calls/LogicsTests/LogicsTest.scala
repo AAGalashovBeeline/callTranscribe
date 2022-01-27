@@ -15,7 +15,7 @@ object LogicsTest {
   val env: ULayer[HasLogicsClient] = dbTransactor >>> MockLogics.testLive
 
   def createCallPBX(externalCallId: String, ani: String) =
-    Logics.Service.createCallPBX("sdfd", "asds").run.provideLayer(env)
+    Logics.createCallPBX("sdfd", "asds").run.provideLayer(env)
 
 
   val test: Spec[Any, TestFailure[Throwable], TestSuccess] = suite("Тесты сервиса Logics")(
