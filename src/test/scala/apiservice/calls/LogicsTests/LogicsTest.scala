@@ -1,6 +1,6 @@
 package apiservice.calls.LogicsTests
 
-import apiservice.calls.Mock.{MockConf, MockDbTransactor}
+import apiservice.calls.Mock.{MockConf, MockDbTransactor, MockLogics}
 import apiservice.calls.config.Configuration
 import apiservice.calls.repository.Logics.HasLogicsClient
 import apiservice.calls.repository.{DbTransactor, Logics}
@@ -11,9 +11,8 @@ import zio.test.Assertion._
 
 object LogicsTest {
 
-  //val dbTransactor: ULayer[DbTransactor] = Configuration.live >>> DbTransactor.postgres
   val dbTransactor: ULayer[DbTransactor] = MockConf.testLive >>> MockDbTransactor.postgres
-  val env: ULayer[HasLogicsClient] = dbTransactor >>> Logics.live
+  val env: ULayer[HasLogicsClient] = dbTransactor >>> MockLogics.testLive
 
   def createCallPBX(externalCallId: String, ani: String) =
     Logics.Service.createCallPBX("sdfd", "asds").run.provideLayer(env)
