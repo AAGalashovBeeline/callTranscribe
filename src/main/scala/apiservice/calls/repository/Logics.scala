@@ -10,7 +10,7 @@ import doobie.postgres.implicits._
 import zio.macros.accessible
 
 
-class Logics(dbConnect: Transactor[Task]) extends Logics.Service {
+class LogicsImpl(dbConnect: Transactor[Task]) extends Logics.Service {
 
   def createCallPBX(externalCallId: String, ani: String): Task[Long] =
     sql"""
@@ -41,10 +41,10 @@ class Logics(dbConnect: Transactor[Task]) extends Logics.Service {
       .transact(dbConnect)
 }
 
+@accessible
 object Logics {
   type HasLogicsClient = Has[Service]
 
-  @accessible
   trait Service {
     def createCallPBX(externalCallId: String, ani: String): Task[Long]
     def createTranscribe(callId: Long, transcribe: String): Task[CreateTranscribeResp]
@@ -53,7 +53,7 @@ object Logics {
 
   val live: URLayer[DbTransactor, HasLogicsClient] =
     ZLayer.fromService { resource =>
-      new Logics(resource.dbConnect)
+      new LogicsImpl(resource.dbConnect)
     }
 }
 

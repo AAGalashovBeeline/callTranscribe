@@ -37,7 +37,10 @@ lazy val root = (project in file("."))
 
       "joda-time" % "joda-time" % "2.10.10",
 
-      "com.github.pureconfig" %% "pureconfig" % "0.16.0"
+      "com.github.pureconfig" %% "pureconfig" % "0.16.0",
+
+      "dev.zio" %% "zio-test"     % "1.0.10" % "test",
+      "dev.zio" %% "zio-test-sbt" % "1.0.10" % "test"
     ),
     scalacOptions += "-Ymacro-annotations"        //включаем макросы
   )

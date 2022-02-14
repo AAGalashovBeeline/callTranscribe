@@ -24,7 +24,7 @@ object CallService {
            )
          }
         .zServerLogic({ req =>
-            Logics.Service.createCallPBX(req.externalCallId, req.ani)
+            Logics.createCallPBX(req.externalCallId, req.ani)
               .map(CreateCallResp)
               .mapError(e => e.toString)
         }),
@@ -40,7 +40,7 @@ object CallService {
         )
       }
       .zServerLogic({ req =>
-        Logics.Service.createTranscribe(req.callId, req.transcribe)
+        Logics.createTranscribe(req.callId, req.transcribe)
           .mapError(e => e.toString)
       }),
 
@@ -55,7 +55,7 @@ object CallService {
         )
       }
       .zServerLogic { req =>
-        Logics.Service.getCalls(req.ani, req.dateFrom, req.dateTo)
+        Logics.getCalls(req.ani, req.dateFrom, req.dateTo)
           .map(CallsInfoResp)
           .mapError(e => e.toString)
       }
